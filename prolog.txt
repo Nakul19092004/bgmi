@@ -1,0 +1,185 @@
+FIRST  
+ORDER LOGIC - PROLOG 
+Rules for Prolog:  
+1. End every Fact with a full stop  .  
+2. , means AND | ; means OR | :- is a function 
+3. Use ?- at the beginning of a Query  
+4. Run only one query at a time 
+5. Variables start with a capital letter or underscore 
+6. Function names are written in lowercase  
+7. Save file name with extension .pl 
+8. Before running the file, type [file_name]. (If it turns out to be true, you’re set to go!)
+ 
+CODE - Basic Operations 
+add(X, Y, Z) :- Z is X + Y. 
+sub(X, Y, Z) :- Z is X - Y. 
+multi(X, Y, Z) :- Z is X * Y. 
+div(X, Y, Z) :- Z is X / Y. 
+QUERIES - Basic Operations  
+?- add(5, 6, Z). 
+?- sub(7, 2, Z). 
+?- mul(2, 3, Z). 
+?- div(10, 2, Z).
+ 
+CODE - Factorial 
+factorial(0,1).     
+factorial(N,F):- 
+N > 0, 
+N1 is N - 1, 
+factorial(N1, F1), 
+F is N * F1. 
+QUERY - Factorial 
+?- factorial(5, F). 
+Base Case. If N is 0, then factorial is 1 
+ 
+CODE - GCD & LCM 
+gcd(X, 0, X).     Base Case. If GCD of X, 0, then GCD is 
+X 
+gcd(X, Y, Z) :- 
+    Y > 0, 
+    R is X mod Y, 
+    gcd(Y, R, Z). 
+ 
+lcm(X, Y, LCM) :- 
+    gcd(X, Y, Z), 
+    Product is X * Y, 
+    LCM is Product // Z. 
+ 
+QUERY - GCD & LCM 
+?- gcd(2, 4, Z). 
+?- lcm(10, 5, LCM). 
+ 
+ 
+CODE - Prime Number or Not 
+is_prime(N) :- 
+    N > 1, 
+    not(divisible(N, 2)). 
+ 
+divisible(N, D) :- 
+    D * D =< N, 
+    (N mod D =:= 0 ; divisible(N, D + 1)). 
+ 
+QUERY - Prime Number or Not 
+?- is_prime(13) 
+ 
+ 
+CODE - Largest number in a list 
+largest([X], X).        Base Case. If only 1 element in list, it’s the 
+largest 
+largest([X, Y | Rest], Largest) :- 
+X >= Y, 
+largest([X | Rest], Largest). 
+largest([X, Y | Rest], Largest) :- 
+X < Y, 
+largest([Y | Rest], Largest). 
+ 
+QUERY - Largest number in a list 
+?- largest([2, 5, 90, 4, 1], Largest) 
+
+CODE - Smallest number in a list 
+smallest([X], X).     
+Base Case. If only 1 element in list, it’s the smallest 
+smallest([X, Y | Rest], Smallest) :- 
+X =< Y, 
+smallest([X | Rest], Smallest). 
+smallest([X, Y | Rest], Smallest) :- 
+X > Y, 
+smallest([Y | Rest], Smallest). 
+QUERY - Smallest number in a list 
+?- smallest([2, 5, 90, 4, 1], Smallest) 
+
+CODE - Family Tree 
+male(john). 
+male(mike). 
+male(david). 
+male(paul). 
+male(tom). 
+female(lisa). 
+female(susan). 
+female(emma). 
+female(anna). 
+female(sophia). 
+parent(john, mike). 
+parent(lisa, mike). 
+parent(john, emma). 
+parent(lisa, emma). 
+parent(mike, sophia). 
+parent(susan, sophia). 
+parent(david, paul). 
+parent(anna, paul). 
+ 
+ 
+ 
+father_of(X, Y) :-    mother_of(X, Y) :- 
+    male(X),      female(X), 
+    parent(X, Y).     parent(X, Y). 
+ 
+grandparent_of(X, Y) :- 
+    parent(X, Z), 
+    parent(Z, Y). 
+ 
+grandfather_of(X, Y) :-   grandmother_of(X, Y) :- 
+    male(X),      female(X), 
+    grandparent_of(X, Y).    grandparent_of(X, Y). 
+     
+sibling_of(X, Y) :-    cousin_of(X, Y) :- 
+    parent(Z, X),     parent(A, X), 
+    parent(Z, Y),     parent(B, Y), 
+    X \= Y.      sibling_of(A, B). 
+ 
+brother_of(X, Y) :-    sister_of(X, Y) :- 
+    male(X),      female(X), 
+    sibling_of(X, Y).     sibling_of(X, Y). 
+ 
+uncle_of(X, Y) :-    aunt_of(X, Y) :- 
+    parent(Z, Y),     parent(Z, Y), 
+    sibling_of(X, Z),     sibling_of(X, Z), 
+    male(X).      female(X). 
+ 
+ 
+  
+QUERY - Family Tree 
+?- grandfather_of(X, sophia). 
+?- cousin_of(X, sophia). 
+?- aunt_of(X, paul). 
+?- sibling_of(X, mike). 
+etc.. 
+ 
+  is_even(X):- X mod 2 =:= 0.
+ 
+ is_odd(X):- X mod 2 \= 0.
+ 
+ largest_of_2(A, B, C):- C is max(A, B).
+
+ largest_of_3(A, B, C, D):- 
+A > B, A > C ->  D is A;
+ B > A, B > C ->  D is B;
+ D is C.
+
+ smallest_of_3(A, B, C, D):
+A < B, A < C ->  D is A;
+ B < A, B < C ->  D is B;
+ D is C
+
+
+ parent_of(manish,ravindra).
+ parent_of(manish,savita).
+ parent_of(manas,manish).
+ parent_of(manas,archana).
+ parent_of(tejal,manish).
+ parent_of(tejal,archana).
+ male(manish).
+ male(manas).
+ male(ravindra).
+ female(savita).
+ female(tejal).
+ female(archana).
+ father_of(X, Y):-
+ male(X),
+ parent_of(X,Y).
+ mother_of(X, Y):-
+ female(X),
+ parent_of(X,Y).
+ 
+output:
+father_of(manish,ravindra).
